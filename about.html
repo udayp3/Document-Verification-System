@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DocuVerify — About</title>
+
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://kit.fontawesome.com/a2d9d5b02f.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="fade-in">
+  <header class="topbar navbar-dark">
+    <div class="nav-container">
+      <h1 class="logo">DocuVerify</h1>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="upload.html">Register</a>
+        <a href="verify.html">Verify</a>
+        <a href="admin.html">Records</a>
+        <a href="delete.html">Delete</a>
+        <a href="about.html" class="active">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="about-hero">
+    <div class="hero-text fade-up">
+      <h2>About <span class="highlight">DocuVerify</span></h2>
+      <p>
+        DocuVerify is a <strong>client-side document verification system</strong>
+        that uses cryptographic hashing (SHA-256) to secure, verify, and protect
+        the authenticity of digital files — all within your browser.
+      </p>
+    </div>
+  </section>
+
+  <section class="team-section container fade-up">
+    <h3 class="section-title">Developer</h3>
+
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <img src="assets/uday photo.jpg" alt="Developer" />
+        <h4>Uday P</h4>
+        <p class="role">Full Project Developer</p>
+        <p>Designed and developed the entire DocuVerify system including UI/UX, cryptographic hashing workflow, local storage logic, and overall user experience.</p>
+        <div class="social-links">
+          <a href="https://github.com/udayp3" target="_blank"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mission-section fade-up">
+    <div class="mission-content container">
+      <h3>Our Mission</h3>
+      <p>
+        To empower individuals and developers with an easy-to-use document integrity verification tool, ensuring transparency, trust, and authenticity — without relying on centralized servers.
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer-dark">
+    <p>© 2025 DocuVerify — Developed with ❤️ by Uday P.</p>
+  </footer>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      document.querySelectorAll(".reveal").forEach(el => {
+        const windowHeight = window.innerHeight;
+        const revealTop = el.getBoundingClientRect().top;
+        const revealPoint = 120;
+        if (revealTop < windowHeight - revealPoint) {
+          el.classList.add("active");
+        }
+      });
+    });
+  </script>
+
+  <style>
+    .about-hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)),
+        url("assets/images/about-bg.jpg") center/cover no-repeat;
+      text-align: center;
+      padding: 100px 20px;
+      color: var(--white);
+    }
+
+    .about-hero .highlight { color: var(--second-color); }
+
+    .hero-text p {
+      max-width: 700px;
+      margin: 15px auto;
+      line-height: 1.8;
+      color: var(--light);
+    }
+
+    .team-section { margin: 80px auto; text-align: center; }
+
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 40px;
+      color: var(--white);
+    }
+
+    .team-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .team-card {
+      background: rgba(37, 32, 36, 0.9);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 25px;
+      width: 300px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .team-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 0 15px var(--second-color);
+    }
+
+    .team-card img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid var(--main-color);
+      margin-bottom: 15px;
+    }
+
+    .team-card h4 { color: var(--white); margin-bottom: 5px; }
+
+    .team-card .role {
+      color: var(--accent-color);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .team-card p {
+      color: var(--light);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .social-links { margin-top: 15px; }
+
+    .social-links a {
+      color: var(--white);
+      margin: 0 10px;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+    }
+
+    .social-links a:hover {
+      color: var(--second-color);
+      transform: scale(1.2);
+    }
+
+    .mission-section {
+      background: linear-gradient(90deg, var(--main-color), var(--second-color));
+      color: var(--white);
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .mission-content {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .mission-content p {
+      margin-top: 15px;
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    @media (max-width: 768px) {
+      .team-grid {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</body>
+</html>

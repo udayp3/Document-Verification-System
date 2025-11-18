@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DocuVerify — Records / Admin</title>
+
+  <!-- Favicon & Styles -->
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://kit.fontawesome.com/a2d9d5b02f.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="fade-in">
+  <!-- ================= HEADER ================= -->
+  <header class="topbar navbar-dark">
+    <div class="nav-container">
+      <h1 class="logo">DocuVerify</h1>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="upload.html">Register</a>
+        <a href="verify.html">Verify</a>
+        <a href="admin.html" class="active">Records</a>
+        <a href="delete.html">Delete</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="admin-page">
+    <section class="card fade-up">
+      <h2><i class="fas fa-database"></i> Local Records</h2>
+      <p>All document fingerprints stored locally on this device.</p>
+
+      <!-- Toolbar -->
+      <div class="admin-toolbar">
+        <button id="refreshBtn" class="btn-main">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+        <button id="exportBtn" class="btn-main">
+          <i class="fas fa-file-export"></i> Export CSV
+        </button>
+        <button id="clearAllBtn" class="btn-main" style="background: var(--accent-color);">
+          <i class="fas fa-trash-alt"></i> Clear All
+        </button>
+      </div>
+
+      <!-- Records Table -->
+      <div id="recordsList" class="records-table fade-up">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>File Name</th>
+              <th>Hash (SHA-256)</th>
+              <th>Timestamp</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="recordsBody">
+            <!-- Records will be inserted dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer-dark">
+    <p>© 2025 DocuVerify — Local Records Manager.</p>
+  </footer>
+
+  <!-- ================= SCRIPT ================= -->
+  <script>
+    const recordsBody = document.getElementById("recordsBody");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const exportBtn = document.getElementById("exportBtn");
+    
+
+    // Load and render stored records
+    function loadRecords() {
+      const records = JSON.parse(localStorage.getItem("records") || "[]");
+      recordsBody.innerHTML = "";
+
+      if (records.length === 0) {
+        recordsBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--light);">No records found.</td></tr>`;
+        return;
+      }
+
+      records.forEach((record, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${record.fileName}</td>
+          <td class="hash-cell">${record.hash}</td>
+          <td>${record.timestamp}</td>
+          <td>
+            <button class="btn-small copy-btn" data-hash="${record.hash}">
+              <i class="fas fa-copy"></i>
+            </button>
+          </td>
+        `;
+        recordsBody.appendChild(row);
+      });
+
+      // Add copy button events
+      document.querySelectorAll(".copy-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          navigator.clipboard.writeText(btn.dataset.hash);
+          btn.innerHTML = '<i class="fas fa-check"></i>';
+          btn.style.color = "#16bffd";
+          setTimeout(() => {
+            btn.innerHTML = '<i class="fas fa-copy"></i>';
+            btn.style.color = "var(--white)";
+          }, 1000);
+        });
+      });
+    }
+
+    // Export records to CSV
+    exportBtn.addEventListener("click", () => {
+      const records = JSON.parse(localStorage.getItem("records") || "[]");
+      if (records.length === 0) return alert("No records to export.");
+
+      const csvContent = [
+        ["File Name", "Hash", "Timestamp"],
+        ...records.map(r => [r.fileName, r.hash, r.timestamp])
+      ].map(e => e.join(",")).join("\n");
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "DocuVerify_Records.csv";
+      link.click();
+    });
+
+    // Clear all records
+    clearAllBtn.addEventListener("click", () => {
+      if (confirm("Are you sure you want to delete all records?")) {
+        localStorage.removeItem("records");
+        loadRecords();
+      }
+    });
+
+    // Refresh list
+    refreshBtn.addEventListener("click", loadRecords);
+
+    // Load records on page load
+    window.addEventListener("DOMContentLoaded", loadRecords);
+  </script>
+
+  <!-- ================= INLINE STYLES (Extra Admin Page Polish) ================= -->
+  <style>
+    .records-table table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    .records-table th, .records-table td {
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .records-table th {
+      background: rgba(255,255,255,0.1);
+      color: var(--second-color);
+      font-weight: 600;
+    }
+
+    .records-table tr:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .btn-small {
+      background: none;
+      border: none;
+      color: var(--white);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn-small:hover {
+      color: var(--second-color);
+    }
+
+    .admin-toolbar {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .admin-toolbar button {
+      padding: 8px 15px;
+      font-size: 14px;
+    }
+
+    .hash-cell {
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--light);
+      word-break: break-all;
+    }
+
+    @media (max-width: 768px) {
+      .records-table table, .records-table thead, .records-table tbody, .records-table th, .records-table td, .records-table tr {
+        display: block;
+      }
+
+      .records-table tr {
+        margin-bottom: 15px;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: var(--border-radius);
+        padding: 10px;
+      }
+
+      .records-table td {
+        border: none;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .records-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--second-color);
+      }
+    }
+  </style>
+</body>
+</html>

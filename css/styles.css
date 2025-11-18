@@ -1,0 +1,329 @@
+/* ------------------------------------------------------------
+   GLOBAL THEME VARIABLES
+------------------------------------------------------------ */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap");
+
+:root {
+  --main-color: #cb3066;
+  --second-color: #16bffd;
+  --accent-color: #ff5de5;
+  --dark: #1f2022;
+  --light: rgb(180, 180, 180);
+  --white: rgba(255, 255, 255, 0.95);
+  --boxes-color: #252024;
+  --inputs-background: #121212;
+  --border-radius: 10px;
+  --box-shadow: 0 0 8px rgba(255, 255, 255, 0.08);
+}
+
+/* ------------------------------------------------------------
+   BASE STYLES
+------------------------------------------------------------ */
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, var(--second-color), var(--main-color));
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* Page fade-in animation */
+body.fade-in {
+  animation: fadeInBody 0.8s ease-in forwards;
+}
+
+@keyframes fadeInBody {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------------------------------------
+   NAVBAR
+------------------------------------------------------------ */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(31, 32, 34, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--box-shadow);
+  padding: 10px 0;
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+
+.nav-links a {
+  color: var(--white);
+  font-weight: 500;
+  margin: 0 12px;
+  position: relative;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.nav-links a::after {
+  content: "";
+  width: 0%;
+  height: 2px;
+  background: var(--second-color);
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  transition: 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+
+/* ------------------------------------------------------------
+   VIDEO BACKGROUND (for home page)
+------------------------------------------------------------ */
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.55);
+  z-index: -1;
+}
+
+/* ------------------------------------------------------------
+   HERO SECTION
+------------------------------------------------------------ */
+.home {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  color: var(--white);
+  text-align: center;
+  padding: 20px;
+}
+
+.hero-content {
+  z-index: 2;
+  max-width: 700px;
+  animation: fadeInBody 1s ease;
+}
+
+.hero-content h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.hero-content p {
+  font-size: 1rem;
+  color: var(--light);
+  line-height: 1.6;
+}
+
+/* ------------------------------------------------------------
+   BUTTONS
+------------------------------------------------------------ */
+.btn-main {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 35px;
+  background: linear-gradient(90deg, var(--main-color), var(--second-color));
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: var(--box-shadow);
+  display: inline-block;
+  margin-top: 15px;
+}
+
+.btn-main:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px var(--second-color);
+}
+
+/* ------------------------------------------------------------
+   FEATURES SECTION
+------------------------------------------------------------ */
+.features-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  padding: 80px 20px;
+}
+
+.feature-card {
+  background: var(--boxes-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 30px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 15px var(--second-color);
+}
+
+.feature-card i {
+  margin-bottom: 10px;
+  color: var(--second-color);
+}
+
+.feature-card h3 {
+  margin-bottom: 10px;
+  color: var(--white);
+}
+
+.feature-card p {
+  color: var(--light);
+  font-size: 0.9rem;
+}
+
+/* ------------------------------------------------------------
+   CARD STYLING (general UI boxes)
+------------------------------------------------------------ */
+.card {
+  background: var(--boxes-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 20px;
+  transition: all 0.4s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 15px var(--second-color);
+}
+
+/* ------------------------------------------------------------
+   INPUTS
+------------------------------------------------------------ */
+input,
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  background: var(--inputs-background);
+  border: 1px solid var(--main-color);
+  color: var(--white);
+  border-radius: var(--border-radius);
+  margin: 10px 0;
+  font-size: 15px;
+}
+
+input:focus,
+textarea:focus {
+  box-shadow: 0 0 8px var(--second-color);
+  outline: none;
+}
+
+/* ------------------------------------------------------------
+   FOOTER
+------------------------------------------------------------ */
+.footer-dark {
+  background: var(--dark);
+  padding: 40px 0;
+  color: var(--light);
+  text-align: center;
+  font-size: 14px;
+}
+
+/* ------------------------------------------------------------
+   REUSABLE ANIMATIONS
+------------------------------------------------------------ */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------------------------------------
+   MAIN CONTAINER SECTION
+------------------------------------------------------------ */
+.containerrr {
+  max-width: 1200px;
+  margin: 100px auto 60px auto; /* adds spacing below navbar and before footer */
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.fade-up {
+  animation: slideUp 0.8s ease forwards;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px var(--second-color); }
+  50% { box-shadow: 0 0 15px var(--main-color); }
+  100% { box-shadow: 0 0 5px var(--second-color); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Reveal animation (on scroll) */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------
+   RESPONSIVE
+------------------------------------------------------------ */
+@media (max-width: 768px) {
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .feature-card {
+    width: 90%;
+  }
+}

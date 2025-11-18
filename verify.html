@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DocuVerify — Verify Document</title>
+
+  <!-- Favicon & Styles -->
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://kit.fontawesome.com/a2d9d5b02f.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="fade-in">
+  <!-- ================= HEADER ================= -->
+  <header class="topbar navbar-dark">
+    <div class="nav-container">
+      <h1 class="logo">DocuVerify</h1>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="upload.html">Register</a>
+        <a href="verify.html" class="active">Verify</a>
+        <a href="admin.html">Records</a>
+        <a href="delete.html">Delete</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="verify-page">
+    <section class="verify-section card fade-up">
+      <h2><i class="fas fa-shield-check"></i> Verify Document</h2>
+      <p>
+        Upload a file or paste a known hash below to verify if it matches a registered record.
+      </p>
+
+      <!-- Upload Input -->
+      <div class="upload-box">
+        <label for="verifyFileInput" class="upload-label">
+          <i class="fas fa-file-import"></i> Select File
+        </label>
+        <input id="verifyFileInput" type="file" class="hidden" />
+      </div>
+
+      <!-- OR Divider -->
+      <div class="divider">— or —</div>
+
+      <!-- Hash Input -->
+      <input id="hashInput" type="text" placeholder="Paste verification hash here" class="hash-input" />
+
+      <!-- Result -->
+      <div id="verifyResult" class="result-box card hidden"></div>
+
+      <!-- Check Button -->
+      <div class="btn-container">
+        <button id="checkBtn" class="btn-main">
+          <i class="fas fa-search"></i> Check
+        </button>
+        <button id="clearBtn" class="btn-main" style="background: var(--accent-color);">
+          <i class="fas fa-trash"></i> Clear
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer-dark">
+    <p>© 2025 DocuVerify — Secure document verification system.</p>
+  </footer>
+
+  <!-- ================= JS ================= -->
+  <script>
+    const verifyFileInput = document.getElementById("verifyFileInput");
+    const hashInput = document.getElementById("hashInput");
+    const verifyResult = document.getElementById("verifyResult");
+    const checkBtn = document.getElementById("checkBtn");
+    const clearBtn = document.getElementById("clearBtn");
+
+    // Compute SHA-256 hash
+    async function generateHash(file) {
+      const buffer = await file.arrayBuffer();
+      const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    // Display verification results
+    function displayResult(message, success) {
+      verifyResult.classList.remove("hidden");
+      verifyResult.innerHTML = success
+        ? `<p style="color:#16bffd;"><i class="fas fa-check-circle"></i> ${message}</p>`
+        : `<p style="color:#ff5de5;"><i class="fas fa-times-circle"></i> ${message}</p>`;
+      verifyResult.style.animation = "glow 1.5s infinite alternate";
+    }
+
+    // Check file or hash against stored records
+    checkBtn.addEventListener("click", async () => {
+      const records = JSON.parse(localStorage.getItem("records") || "[]");
+      let inputHash = hashInput.value.trim();
+
+      // Case 1: file upload
+      if (verifyFileInput.files.length > 0) {
+        const file = verifyFileInput.files[0];
+        inputHash = await generateHash(file);
+      }
+
+      if (!inputHash) {
+        alert("Please upload a file or enter a hash to verify.");
+        return;
+      }
+
+      const found = records.find(r => r.hash === inputHash);
+
+      if (found) {
+        displayResult(`Document verified! Match found for "${found.fileName}" (saved on ${found.timestamp}).`, true);
+      } else {
+        displayResult("No matching record found. The file or hash is not registered.", false);
+      }
+    });
+
+    // Clear inputs
+    clearBtn.addEventListener("click", () => {
+      verifyFileInput.value = "";
+      hashInput.value = "";
+      verifyResult.classList.add("hidden");
+      verifyResult.innerHTML = "";
+    });
+  </script>
+</body>
+</html>

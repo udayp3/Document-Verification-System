@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DocuVerify — Home</title>
+
+  <!-- Favicon & Styles -->
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a2d9d5b02f.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="fade-in">
+  <!-- ================= HEADER ================= -->
+  <header class="topbar navbar-dark">
+    <div class="container nav-container">
+      <h1 class="logo">DocuVerify</h1>
+      <nav class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="upload.html">Register</a>
+        <a href="verify.html">Verify</a>
+        <a href="admin.html">Records</a>
+        <a href="delete.html">Delete</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION WITH VIDEO ================= -->
+  <section class="home">
+    <!-- 🎥 Background Video -->
+    <video autoplay muted loop playsinline class="bg-video">
+      <source src="assets/earth.mp4" type="video/mp4" />
+      Your browser does not support HTML5 video.
+    </video>
+
+    <!-- Dark overlay for readability -->
+    <div class="overlay"></div>
+
+    <!-- Hero content -->
+    <div class="hero-content fade-up">
+      <h2>Secure Document Verification</h2>
+      <p>
+        Generate a <strong>SHA-256 fingerprint</strong> for any file and
+        store it locally as a tamper-proof record. No servers, no risk —
+        just cryptographic verification on your device.
+      </p>
+      <a href="upload.html" class="btn-main">Get Started</a>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES SECTION ================= -->
+  <section class="features-section container">
+    <div class="feature-card reveal">
+      <i class="fas fa-lock fa-2x"></i>
+      <h3>Privacy-Focused</h3>
+      <p>All verification happens locally in your browser. Your documents never leave your computer.</p>
+    </div>
+    <div class="feature-card reveal">
+      <i class="fas fa-file-alt fa-2x"></i>
+      <h3>Immutable Records</h3>
+      <p>Each file hash is securely stored in your browser using <code>localStorage</code>.</p>
+    </div>
+    <div class="feature-card reveal">
+      <i class="fas fa-bolt fa-2x"></i>
+      <h3>Instant Verification</h3>
+      <p>Compare file fingerprints instantly without any upload or delay.</p>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer-dark">
+    <p>© 2025 DocuVerify — Client-side demo project for learning purposes.</p>
+  </footer>
+
+  <!-- ================= JS FOR REVEAL ANIMATION ================= -->
+  <script>
+    // Simple scroll reveal animation
+    window.addEventListener("scroll", () => {
+      document.querySelectorAll(".reveal").forEach(el => {
+        const windowHeight = window.innerHeight;
+        const revealTop = el.getBoundingClientRect().top;
+        const revealPoint = 150;
+        if (revealTop < windowHeight - revealPoint) {
+          el.classList.add("active");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

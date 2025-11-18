@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DocuVerify — Delete Records</title>
+
+  <!-- Favicon & Styles -->
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://kit.fontawesome.com/a2d9d5b02f.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="fade-in">
+  <!-- ================= HEADER ================= -->
+  <header class="topbar navbar-dark">
+    <div class="nav-container">
+      <h1 class="logo">DocuVerify</h1>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="upload.html">Register</a>
+        <a href="verify.html">Verify</a>
+        <a href="admin.html">Records</a>
+        <a href="delete.html" class="active">Delete</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= MAIN SECTION ================= -->
+  <main class="containerrr fade-up">
+    <section class="card delete-section">
+      <h2><i class="fas fa-exclamation-triangle"></i> Delete All Local Records</h2>
+      <p>
+        This will permanently remove all saved verification data stored in your browser.  
+        <strong>This action cannot be undone.</strong>
+      </p>
+
+      <div class="center-btn">
+        <button id="openModalBtn" class="btn-main danger-btn">
+          <i class="fas fa-trash-alt"></i> Delete All Records
+        </button>
+      </div>
+
+      <div id="deleteResult" class="result hidden"></div>
+    </section>
+  </main>
+
+  <!-- ================= CONFIRMATION MODAL ================= -->
+  <div id="confirmModal" class="modal hidden">
+    <div class="modal-content fade-up">
+      <h3><i class="fas fa-exclamation-circle"></i> Confirm Deletion</h3>
+      <p>Are you sure you want to <strong>delete all records</strong>? This cannot be undone.</p>
+      <div class="modal-actions">
+        <button id="confirmDelete" class="btn-main danger-btn">Yes, Delete</button>
+        <button id="cancelDelete" class="btn-main">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer-dark">
+    <p>© 2025 DocuVerify — Delete Records Page.</p>
+  </footer>
+
+  <!-- ================= SCRIPT ================= -->
+  <script>
+    const modal = document.getElementById("confirmModal");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const cancelDelete = document.getElementById("cancelDelete");
+    const confirmDelete = document.getElementById("confirmDelete");
+    const deleteResult = document.getElementById("deleteResult");
+
+    openModalBtn.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      setTimeout(() => modal.classList.add("active"), 50);
+    });
+
+    cancelDelete.addEventListener("click", () => {
+      modal.classList.remove("active");
+      setTimeout(() => modal.classList.add("hidden"), 300);
+    });
+
+    confirmDelete.addEventListener("click", () => {
+      localStorage.removeItem("records");
+      modal.classList.remove("active");
+      setTimeout(() => modal.classList.add("hidden"), 300);
+      deleteResult.classList.remove("hidden");
+      deleteResult.textContent = "✅ All records have been successfully deleted.";
+      deleteResult.style.color = "#16bffd";
+    });
+  </script>
+
+  <!-- ================= INLINE STYLES (for modal & polish) ================= -->
+  <style>
+    .delete-section {
+      text-align: center;
+      max-width: 600px;
+      margin: 80px auto;
+    }
+
+    .center-btn {
+      margin-top: 25px;
+    }
+
+    .danger-btn {
+      background: linear-gradient(90deg, #ff416c, #ff4b2b);
+    }
+
+    .danger-btn:hover {
+      box-shadow: 0 0 15px rgba(255, 75, 43, 0.6);
+      transform: scale(1.05);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--boxes-color);
+      padding: 30px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      animation: fadeInModal 0.4s ease;
+    }
+
+    .modal-content h3 {
+      color: var(--accent-color);
+      margin-bottom: 15px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    @keyframes fadeInModal {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-weight: 500;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</body>
+</html>

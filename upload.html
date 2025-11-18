@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DocuVerify — Register / Upload</title>
+
+  <!-- Favicon & Styles -->
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://kit.fontawesome.com/a2d9d5b02f.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="fade-in">
+  <!-- ================= HEADER ================= -->
+  <header class="topbar navbar-dark">
+    <div class="nav-container">
+      <h1 class="logo">DocuVerify</h1>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="upload.html" class="active">Register</a>
+        <a href="verify.html">Verify</a>
+        <a href="admin.html">Records</a>
+        <a href="delete.html">Delete</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="upload-page">
+    <section class="upload-section card fade-up">
+      <h2><i class="fas fa-upload"></i> Register / Upload Document</h2>
+      <p>
+        Select a document to generate its <strong>SHA-256 hash</strong> — stored locally as a proof of authenticity.
+      </p>
+
+      <!-- File Input -->
+      <div class="upload-box">
+        <label for="fileInput" class="upload-label">
+          <i class="fas fa-file-arrow-up"></i> Choose File
+        </label>
+        <input id="fileInput" type="file" class="hidden" />
+      </div>
+
+      <!-- Hash Result -->
+      <div id="registerResult" class="result-box card hidden">
+        <h4>File Hash:</h4>
+        <p id="hashOutput" class="hash-text"></p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="btn-container">
+        <button id="saveRecordBtn" class="btn-main" disabled>
+          <i class="fas fa-save"></i> Save Record
+        </button>
+        <button id="clearBtn" class="btn-main" style="background: var(--accent-color);">
+          <i class="fas fa-trash"></i> Clear
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer-dark">
+    <p>© 2025 DocuVerify — Secure client-side file registration system.</p>
+  </footer>
+
+  <!-- ================= JS ================= -->
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const hashOutput = document.getElementById("hashOutput");
+    const registerResult = document.getElementById("registerResult");
+    const saveBtn = document.getElementById("saveRecordBtn");
+    const clearBtn = document.getElementById("clearBtn");
+
+    async function generateHash(file) {
+      const buffer = await file.arrayBuffer();
+      const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    fileInput.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const hash = await generateHash(file);
+      hashOutput.textContent = hash;
+      registerResult.classList.remove("hidden");
+      saveBtn.disabled = false;
+    });
+
+    saveBtn.addEventListener("click", () => {
+      const hash = hashOutput.textContent;
+      if (!hash) return;
+      const fileName = fileInput.files[0].name;
+      const timestamp = new Date().toLocaleString();
+      const records = JSON.parse(localStorage.getItem("records") || "[]");
+      records.push({ fileName, hash, timestamp });
+      localStorage.setItem("records", JSON.stringify(records));
+      alert("✅ Record saved successfully!");
+    });
+
+    clearBtn.addEventListener("click", () => {
+      fileInput.value = "";
+      hashOutput.textContent = "";
+      registerResult.classList.add("hidden");
+      saveBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>
